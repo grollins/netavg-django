@@ -1,0 +1,6 @@
+# Local development dependencies go here
+-r base.txt
+coverage==3.7.1
+django-debug-toolbar==0.11.0
+django-discover-runner==1.0
+Sphinx==1.2
