@@ -35,6 +35,8 @@ def run_netavg_calculation(job_id):
         job.error_message = "Expected .zip or .pdb, got %s" % \
                             basename(trajectory_path)
 
+    knn_output_str = ''
+    domin_output_str = ''
     try:
         knn_cmd = "/home/NetAvg/knn_average.py"
         knn_option = str(job.knn)
@@ -59,10 +61,11 @@ def run_netavg_calculation(job_id):
         job.status = Job.STATUS.done
 
     except Exception as e:
-        error_message = str(e)
-        logging.error(error_message)
+        error_message = knn_output_str + '\n' + domin_output_str
+        logging.error(str(e))
         job.status = Job.STATUS.error
-        job.error_message = error_message
+        job.error_message = str(e)
+        create_error_result_obj(job, error_message)
 
     job.save()
     rmtree(temp_dir)
@@ -74,4 +77,8 @@ def create_result_obj(job, output_path):
     with open(output_path, 'r') as f:
         output_str = f.read()
     r = Result.objects.create(job=job, output_pdb=output_str)
+    return
+
+def create_error_result_obj(job, error_message):
+    r = Result.objects.create(job=job, error_message=error_message)
     return

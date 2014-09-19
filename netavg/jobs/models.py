@@ -31,4 +31,5 @@ class Job(StatusModel):
 class Result(models.Model):
     job = models.ForeignKey('Job', related_name='result')
     output_pdb = models.TextField(default='')
+    error_message = models.TextField(default='')
     name = models.CharField(max_length=100, blank=True, default='')
