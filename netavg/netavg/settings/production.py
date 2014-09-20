@@ -10,7 +10,7 @@ from django.core.exceptions import ImproperlyConfigured
 
 ########## HOST CONFIGURATION
 # See: https://docs.djangoproject.com/en/1.5/releases/1.5/#allowed-hosts-required-in-production
-ALLOWED_HOSTS = ['127.0.0.1', '104.131.59.46']
+ALLOWED_HOSTS = ['127.0.0.1', '104.131.42.27']
 ########## END HOST CONFIGURATION
 
 ########## EMAIL CONFIGURATION

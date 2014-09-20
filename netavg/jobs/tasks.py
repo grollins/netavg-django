@@ -1,5 +1,6 @@
 import logging
 import subprocess
+from os import chdir
 from os.path import join, basename
 from celery import shared_task
 from tempfile import mkdtemp
@@ -13,6 +14,7 @@ from .models import Job, Result
 def run_netavg_calculation(job_id):
     job = Job.objects.get(pk=job_id)
     temp_dir = mkdtemp()
+    chdir(temp_dir)
     trajectory_path = join(temp_dir, basename(job.trajectory.path))
     copyfile(job.trajectory.path, trajectory_path)
     logging.info( "%s" % trajectory_path)
@@ -38,11 +40,12 @@ def run_netavg_calculation(job_id):
     knn_output_str = ''
     domin_output_str = ''
     try:
+        python_cmd = "/home/anaconda/bin/python"
         knn_cmd = "/home/NetAvg/knn_average.py"
         knn_option = str(job.knn)
         knn_input_path = trajectory_file
         knn_output_path = join(temp_dir, "avg.pdb")
-        arg_list = [knn_cmd, '--knn', knn_option, knn_input_path,
+        arg_list = [python_cmd, knn_cmd, '--knn', knn_option, knn_input_path,
                     knn_output_path]
         knn_output_str = \
             subprocess.check_output(arg_list, stderr=subprocess.STDOUT)
@@ -51,7 +54,7 @@ def run_netavg_calculation(job_id):
         domin_input_path1 = knn_output_path
         domin_input_path2 = knn_input_path
         domin_output_path = join(temp_dir, "netavg_%s" % basename(trajectory_file))
-        arg_list2 = [domin_cmd, domin_input_path1, domin_input_path2,
+        arg_list2 = [python_cmd, domin_cmd, domin_input_path1, domin_input_path2,
                      domin_output_path]
         domin_output_str = \
             subprocess.check_output(arg_list2, stderr=subprocess.STDOUT)
