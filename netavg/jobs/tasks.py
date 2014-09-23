@@ -77,16 +77,16 @@ def run_netavg_calculation(job_id):
             create_error_result_obj(job, error_message)
             network_avg_success = False
 
+    #  ======================
+    #  = Minimize structure =
+    #  ======================
     if input_parse_success and network_avg_success:
+        gmx_log_path = join(temp_dir, "gmx_log.txt")
         try:
-            #  ======================
-            #  = Minimize structure =
-            #  ======================
             domin_input_path1 = knn_output_path
             domin_input_path2 = knn_input_path
             domin_output_path = \
                 join(temp_dir, "netavg_%s" % basename(trajectory_file))
-            gmx_log_path = join(temp_dir, "gmx_log.txt")
             m = Minimizer(domin_input_path1, domin_input_path2)
             with open(gmx_log_path, 'w') as f:
                 minimized_protein = \
@@ -97,7 +97,7 @@ def run_netavg_calculation(job_id):
             job.status = Job.STATUS.done
 
         except Exception as e:
-            error_message = open('gmx_log_path', 'r').readlines()
+            error_message = open(gmx_log_path, 'r').readlines()
             logging.error(str(e))
             job.status = Job.STATUS.error
             job.error_message = str(e)
