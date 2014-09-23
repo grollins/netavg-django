@@ -46,7 +46,7 @@ def parse_args():
 
 
 class Minimizer(object):
-    def __init__(self, input_pdb_filename, trajectory_filename, force_const):
+    def __init__(self, input_pdb_filename, trajectory_filename):
         self.input_pdb = self._load_pdb(input_pdb_filename)
         self.trajectory = self._load_pdb(trajectory_filename)
 

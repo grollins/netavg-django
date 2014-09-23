@@ -75,15 +75,15 @@ class KNN_Averager(object):
         # return it
         return average
 
-    def calc_average(self, trajectory, knn):
+    def calc_average(self, knn):
         output = prody.AtomGroup('Cartesian average coordinates')
-        output_coords = trajectory.getCoords()
-        output.setCoords( trajectory.getCoords() )
-        output.setNames( trajectory.getNames() )
-        output.setResnums( trajectory.getResnums() )
-        output.setResnames( trajectory.getResnames() )
+        output_coords = self.trajectory.getCoords()
+        output.setCoords( self.trajectory.getCoords() )
+        output.setNames( self.trajectory.getNames() )
+        output.setResnums( self.trajectory.getResnums() )
+        output.setResnames( self.trajectory.getResnames() )
 
-        ensemble = prody.PDBEnsemble(trajectory)
+        ensemble = prody.PDBEnsemble(self.trajectory)
         ensemble.iterpose()
 
         print 'Using knn of {}'.format(knn)
