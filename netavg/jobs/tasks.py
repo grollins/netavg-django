@@ -90,7 +90,7 @@ def run_netavg_calculation(job_id):
             m = Minimizer(domin_input_path1, domin_input_path2)
             with open(gmx_log_path, 'w') as f:
                 minimized_protein = \
-                    m.run_minimization(force_const=1000., ouput_stream=f)
+                    m.run_minimization(posres_force_const=1000., ouput_stream=f)
             writePDB(domin_output_path, minimized_protein)
 
             create_result_obj(job, domin_output_path)
